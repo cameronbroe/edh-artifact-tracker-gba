@@ -1,0 +1,6 @@
+*.elf
+*.gba
+*.sav
+build/
+.DS_Store
+**/.DS_Store

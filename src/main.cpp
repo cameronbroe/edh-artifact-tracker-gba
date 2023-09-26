@@ -43,6 +43,8 @@ int main()
             if(counter < 20) { counter++; }
         } else if(bn::keypad::b_pressed()) {
             if(counter > 0) { counter--; }
+        } else if(bn::keypad::select_pressed()) {
+            counter = 0;
         }
         update_counter(counter_text_generator, counter_sprites);
         bn::core::update();

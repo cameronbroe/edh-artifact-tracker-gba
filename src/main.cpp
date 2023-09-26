@@ -3,6 +3,11 @@
 #include "bn_keypad.h"
 #include "bn_sprite_ptr.h"
 #include "bn_sprite_text_generator.h"
+#include "bn_regular_bg_actions.h"
+#include "bn_regular_bg_builder.h"
+#include "bn_regular_bg_attributes.h"
+
+#include "bn_regular_bg_items_counter_bg.h"
 
 #include "fixed_32x64_sprite_font.h"
 
@@ -17,7 +22,7 @@ void update_counter(
     counter_string_stream.append(counter);
 
     text_sprites.clear();
-    text_generator.generate(0, 0, counter_string, text_sprites);
+    text_generator.generate(40, 0, counter_string, text_sprites);
 }
 
 int main()
@@ -28,6 +33,9 @@ int main()
     counter_text_generator.set_center_alignment();
 
     bn::vector<bn::sprite_ptr, 2> counter_sprites;
+
+    bn::regular_bg_ptr counter_bg = bn::regular_bg_items::counter_bg.create_bg(0, 0);
+    counter_bg.set_visible(true);
 
     while(true)
     {

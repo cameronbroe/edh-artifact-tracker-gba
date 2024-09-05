@@ -21,8 +21,8 @@
 
 #define ICON_X -62
 #define TOTAL_X -30
-#define TAPPED_X 0
-#define UNTAPPED_X 30
+#define TAPPED_X 30
+#define UNTAPPED_X 0
 
 static int counter = 0;
 

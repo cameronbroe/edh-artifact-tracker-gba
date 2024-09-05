@@ -9,6 +9,10 @@
 
 #include "bn_regular_bg_items_counter_bg.h"
 
+#include "bn_sprite_items_apple.h"
+#include "bn_sprite_items_gold_pile.h"
+#include "bn_sprite_items_parchment_new.h"
+
 #include "fixed_32x64_sprite_font.h"
 
 static int counter = 0;
@@ -30,12 +34,16 @@ int main()
     bn::core::init();
 
     bn::sprite_text_generator counter_text_generator(fixed_32x64_sprite_font);
-    counter_text_generator.set_center_alignment();
+    // counter_text_generator.set_center_alignment();
 
     bn::vector<bn::sprite_ptr, 2> counter_sprites;
 
     bn::regular_bg_ptr counter_bg = bn::regular_bg_items::counter_bg.create_bg(0, 0);
     counter_bg.set_visible(true);
+
+    bn::sprite_ptr food_sprite = bn::sprite_items::apple.create_sprite(-92, -56);
+    bn::sprite_ptr treasure_sprite = bn::sprite_items::gold_pile.create_sprite(-92, 0);
+    bn::sprite_ptr clue_sprite = bn::sprite_items::parchment_new.create_sprite(-92, 56);
 
     while(true)
     {

@@ -30,13 +30,13 @@
 
 static int counter = 0;
 
-static int food_count = 999;
-static int treasure_count = 999;
-static int clue_count = 999;
+static int food_count = 0;
+static int treasure_count = 0;
+static int clue_count = 0;
 
-static int food_tapped_count = 999;
-static int treasure_tapped_count = 999;
-static int clue_tapped_count = 999;
+static int food_tapped_count = 0;
+static int treasure_tapped_count = 0;
+static int clue_tapped_count = 0;
 
 // 0 = food
 // 1 = treasure

@@ -166,6 +166,22 @@ void increment_selected_artifact() {
     }
 }
 
+void tap_selected_artifact() {
+    switch(selected_artifact) {
+        case 0:
+            if(food_tapped_count < food_count) food_tapped_count++;
+            break;
+        case 1:
+            if(treasure_tapped_count < treasure_count) treasure_tapped_count++;
+            break;
+        case 2:
+            if(clue_tapped_count < clue_count) clue_tapped_count++;
+            break;
+        default:
+            break;
+    }
+}
+
 void decrement_selected_artifact() {
     switch(selected_artifact) {
         case 0:
@@ -176,6 +192,22 @@ void decrement_selected_artifact() {
             break;
         case 2:
             if(clue_count > 0) clue_count--;
+            break;
+        default:
+            break;
+    }
+}
+
+void untap_selected_artifact() {
+    switch(selected_artifact) {
+        case 0:
+            if(food_tapped_count > 0) food_tapped_count--;
+            break;
+        case 1:
+            if(treasure_tapped_count > 0) treasure_tapped_count--;
+            break;
+        case 2:
+            if(clue_tapped_count > 0) clue_tapped_count--;
             break;
         default:
             break;
@@ -232,6 +264,14 @@ int main()
         } else if(bn::keypad::left_pressed()) {
             decrement_selected_artifact();
         }
+
+        // Handle tapping tokens
+        if(bn::keypad::a_pressed()) {
+            tap_selected_artifact();
+        } else if(bn::keypad::b_pressed()) {
+            untap_selected_artifact();
+        }
+
 
         update_selection(selection_sprite);
 

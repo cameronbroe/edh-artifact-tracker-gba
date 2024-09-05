@@ -144,11 +144,11 @@ int main()
     bn::regular_bg_ptr counter_bg = bn::regular_bg_items::counter_bg.create_bg(0, 0);
     counter_bg.set_visible(true);
 
-    bn::sprite_ptr food_sprite = bn::sprite_items::apple.create_sprite(ICON_X, -36);
+    bn::sprite_ptr food_sprite = bn::sprite_items::apple.create_sprite(ICON_X, FOOD_Y);
     food_sprite.set_scale(0.75);
-    bn::sprite_ptr treasure_sprite = bn::sprite_items::gold_pile.create_sprite(ICON_X, 0);
+    bn::sprite_ptr treasure_sprite = bn::sprite_items::gold_pile.create_sprite(ICON_X, TREASURE_Y);
     treasure_sprite.set_scale(0.75);
-    bn::sprite_ptr clue_sprite = bn::sprite_items::parchment_new.create_sprite(ICON_X, 36);
+    bn::sprite_ptr clue_sprite = bn::sprite_items::parchment_new.create_sprite(ICON_X, CLUE_Y);
     clue_sprite.set_scale(0.75);
 
     while(true)

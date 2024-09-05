@@ -13,37 +13,81 @@
 #include "bn_sprite_items_gold_pile.h"
 #include "bn_sprite_items_parchment_new.h"
 
-#include "fixed_32x64_sprite_font.h"
+#include "bf_big_sprite_font.h"
+
+#define FOOD_Y -36
+#define TREASURE_Y 0
+#define CLUE_Y 36
+
+#define ICON_X -62
+#define TOTAL_X -24
 
 static int counter = 0;
 
-void update_counter(
-    bn::sprite_text_generator& text_generator, 
-    bn::vector<bn::sprite_ptr, 2>& text_sprites
-) {
-    bn::string<2> counter_string;
-    bn::ostringstream counter_string_stream(counter_string);
-    counter_string_stream.append(counter);
+static int food_count = 999;
+static int treasure_count = 999;
+static int clue_count = 999;
 
-    text_sprites.clear();
-    text_generator.generate(40, 0, counter_string, text_sprites);
+static int food_tapped_count = 999;
+static int treasure_tapped_count = 0;
+static int clue_tapped_count = 0;
+
+void update_food_counters(
+    bn::sprite_text_generator& text_generator, 
+    bn::vector<bn::sprite_ptr, 3>& count_sprites
+) {
+    bn::string<3> food_count_string;
+    bn::ostringstream food_count_string_stream(food_count_string);
+    food_count_string_stream.append(food_count);
+
+    count_sprites.clear();
+    text_generator.generate(TOTAL_X, FOOD_Y, food_count_string, count_sprites);
+}
+
+void update_treasure_counters(
+    bn::sprite_text_generator& text_generator, 
+    bn::vector<bn::sprite_ptr, 3>& count_sprites
+) {
+    bn::string<3> treasure_count_string;
+    bn::ostringstream treasure_count_string_stream(treasure_count_string);
+    treasure_count_string_stream.append(treasure_count);
+
+    count_sprites.clear();
+    text_generator.generate(TOTAL_X, TREASURE_Y, treasure_count_string, count_sprites);
+}
+
+void update_clue_counters(
+    bn::sprite_text_generator& text_generator, 
+    bn::vector<bn::sprite_ptr, 3>& count_sprites
+) {
+    bn::string<3> clue_count_string;
+    bn::ostringstream clue_count_string_stream(clue_count_string);
+    clue_count_string_stream.append(clue_count);
+
+    count_sprites.clear();
+    text_generator.generate(TOTAL_X, CLUE_Y, clue_count_string, count_sprites);
 }
 
 int main()
 {
     bn::core::init();
 
-    bn::sprite_text_generator counter_text_generator(fixed_32x64_sprite_font);
-    // counter_text_generator.set_center_alignment();
+    bn::sprite_text_generator counter_text_generator(bf::big_sprite_font);
+    counter_text_generator.set_center_alignment();
 
-    bn::vector<bn::sprite_ptr, 2> counter_sprites;
+    bn::vector<bn::sprite_ptr, 3> food_total_sprites;
+    bn::vector<bn::sprite_ptr, 3> treasure_total_sprites;
+    bn::vector<bn::sprite_ptr, 3> clue_total_sprites;
 
     bn::regular_bg_ptr counter_bg = bn::regular_bg_items::counter_bg.create_bg(0, 0);
     counter_bg.set_visible(true);
 
-    bn::sprite_ptr food_sprite = bn::sprite_items::apple.create_sprite(-92, -56);
-    bn::sprite_ptr treasure_sprite = bn::sprite_items::gold_pile.create_sprite(-92, 0);
-    bn::sprite_ptr clue_sprite = bn::sprite_items::parchment_new.create_sprite(-92, 56);
+    bn::sprite_ptr food_sprite = bn::sprite_items::apple.create_sprite(ICON_X, -36);
+    food_sprite.set_scale(0.75);
+    bn::sprite_ptr treasure_sprite = bn::sprite_items::gold_pile.create_sprite(ICON_X, 0);
+    treasure_sprite.set_scale(0.75);
+    bn::sprite_ptr clue_sprite = bn::sprite_items::parchment_new.create_sprite(ICON_X, 36);
+    clue_sprite.set_scale(0.75);
 
     while(true)
     {
@@ -54,7 +98,11 @@ int main()
         } else if(bn::keypad::select_pressed()) {
             counter = 0;
         }
-        update_counter(counter_text_generator, counter_sprites);
+
+
+        update_food_counters(counter_text_generator, food_total_sprites);
+        update_treasure_counters(counter_text_generator, treasure_total_sprites);
+        update_clue_counters(counter_text_generator, clue_total_sprites);
         bn::core::update();
     }
 }

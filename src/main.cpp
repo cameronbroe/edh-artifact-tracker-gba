@@ -17,6 +17,9 @@
 
 #include "bf_big_sprite_font.h"
 
+
+#define MAX_TOKEN_COUNT 999
+
 #define FOOD_Y -36
 #define TREASURE_Y 0
 #define CLUE_Y 36
@@ -28,7 +31,6 @@
 
 #define SELECTION_X -92
 
-static int counter = 0;
 
 static int food_count = 0;
 static int treasure_count = 0;
@@ -148,6 +150,38 @@ void update_selection(bn::sprite_ptr selection_sprite) {
     }
 }
 
+void increment_selected_artifact() {
+    switch(selected_artifact) {
+        case 0:
+            if(food_count < MAX_TOKEN_COUNT) food_count++;
+            break;
+        case 1:
+            if(treasure_count < MAX_TOKEN_COUNT) treasure_count++;
+            break;
+        case 2:
+            if(clue_count < MAX_TOKEN_COUNT) clue_count++;
+            break;
+        default:
+            break;
+    }
+}
+
+void decrement_selected_artifact() {
+    switch(selected_artifact) {
+        case 0:
+            if(food_count > 0) food_count--;
+            break;
+        case 1:
+            if(treasure_count > 0) treasure_count--;
+            break;
+        case 2:
+            if(clue_count > 0) clue_count--;
+            break;
+        default:
+            break;
+    }
+}
+
 int main()
 {
     bn::core::init();
@@ -181,14 +215,7 @@ int main()
 
     while(true)
     {
-        if(bn::keypad::a_pressed()) {
-            if(counter < 20) { counter++; }
-        } else if(bn::keypad::b_pressed()) {
-            if(counter > 0) { counter--; }
-        } else if(bn::keypad::select_pressed()) {
-            counter = 0;
-        }
-
+        // Handle selecting token type
         if(bn::keypad::up_pressed()) {
             if(selected_artifact == 0) {
                 selected_artifact = 2;
@@ -197,6 +224,13 @@ int main()
             }
         } else if(bn::keypad::down_pressed()) {
             selected_artifact = (selected_artifact + 1) % 3;
+        }
+
+        // Handle incrementing token type count by 1
+        if(bn::keypad::right_pressed()) {
+            increment_selected_artifact();
+        } else if(bn::keypad::left_pressed()) {
+            decrement_selected_artifact();
         }
 
         update_selection(selection_sprite);

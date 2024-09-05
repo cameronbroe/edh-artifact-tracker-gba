@@ -24,12 +24,12 @@
 #define TREASURE_Y 0
 #define CLUE_Y 36
 
-#define ICON_X -62
-#define TOTAL_X -30
-#define TAPPED_X 30
-#define UNTAPPED_X 0
+#define ICON_X -37
+#define TOTAL_X -5
+#define TAPPED_X 55
+#define UNTAPPED_X 25
 
-#define SELECTION_X -92
+#define SELECTION_X -67
 
 
 static int food_count = 0;

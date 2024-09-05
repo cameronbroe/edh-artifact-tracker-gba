@@ -298,44 +298,55 @@ int main()
 
     while(true)
     {
-        // Handle selecting token type
-        if(bn::keypad::up_pressed()) {
-            if(selected_artifact == 0) {
-                selected_artifact = 2;
-            } else {
-                selected_artifact--;
-            }
-        } else if(bn::keypad::down_pressed()) {
-            selected_artifact = (selected_artifact + 1) % 3;
-        }
+        if(bn::keypad::select_held() && bn::keypad::start_pressed()) {
+            food_count = 0;
+            food_tapped_count = 0;
 
-        // Handle incrementing token type count by 1
-        if(bn::keypad::right_pressed()) {
-            if(bn::keypad::start_held()) {
-                increment_selected_artifact(10);
-            } else {
-                increment_selected_artifact();
-            }
-        } else if(bn::keypad::left_pressed()) {
-            if(bn::keypad::start_held()) {
-                decrement_selected_artifact(10);
-            } else {
-                decrement_selected_artifact();
-            }
-        }
+            treasure_count = 0;
+            treasure_tapped_count = 0;
 
-        // Handle tapping tokens
-        if(bn::keypad::a_pressed()) {
-            if(bn::keypad::start_held()) {
-                tap_selected_artifact(10);
-            } else {
-                tap_selected_artifact();
+            clue_count = 0;
+            clue_tapped_count = 0;
+        } else {
+            // Handle selecting token type
+            if(bn::keypad::up_pressed()) {
+                if(selected_artifact == 0) {
+                    selected_artifact = 2;
+                } else {
+                    selected_artifact--;
+                }
+            } else if(bn::keypad::down_pressed()) {
+                selected_artifact = (selected_artifact + 1) % 3;
             }
-        } else if(bn::keypad::b_pressed()) {
-            if(bn::keypad::start_held()) {
-                untap_selected_artifact(10);
-            } else {
-                untap_selected_artifact();
+
+            // Handle incrementing token type count by 1
+            if(bn::keypad::right_pressed()) {
+                if(bn::keypad::start_held()) {
+                    increment_selected_artifact(10);
+                } else {
+                    increment_selected_artifact();
+                }
+            } else if(bn::keypad::left_pressed()) {
+                if(bn::keypad::start_held()) {
+                    decrement_selected_artifact(10);
+                } else {
+                    decrement_selected_artifact();
+                }
+            }
+
+            // Handle tapping tokens
+            if(bn::keypad::a_pressed()) {
+                if(bn::keypad::start_held()) {
+                    tap_selected_artifact(10);
+                } else {
+                    tap_selected_artifact();
+                }
+            } else if(bn::keypad::b_pressed()) {
+                if(bn::keypad::start_held()) {
+                    untap_selected_artifact(10);
+                } else {
+                    untap_selected_artifact();
+                }
             }
         }
 

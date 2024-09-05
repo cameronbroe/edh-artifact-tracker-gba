@@ -150,16 +150,16 @@ void update_selection(bn::sprite_ptr selection_sprite) {
     }
 }
 
-void increment_selected_artifact() {
+void increment_selected_artifact(int amount = 1) {
     switch(selected_artifact) {
         case 0:
-            if(food_count < MAX_TOKEN_COUNT) food_count++;
+            if(food_count < MAX_TOKEN_COUNT) food_count += amount;
             break;
         case 1:
-            if(treasure_count < MAX_TOKEN_COUNT) treasure_count++;
+            if(treasure_count < MAX_TOKEN_COUNT) treasure_count += amount;
             break;
         case 2:
-            if(clue_count < MAX_TOKEN_COUNT) clue_count++;
+            if(clue_count < MAX_TOKEN_COUNT) clue_count += amount;
             break;
         default:
             break;
@@ -182,18 +182,18 @@ void tap_selected_artifact() {
     }
 }
 
-void decrement_selected_artifact() {
+void decrement_selected_artifact(int amount = 1) {
     switch(selected_artifact) {
         case 0:
-            if(food_count > 0) food_count--;
+            if(food_count > 0) food_count -= amount;
             if(food_count < food_tapped_count) food_tapped_count = food_count;
             break;
         case 1:
-            if(treasure_count > 0) treasure_count--;
+            if(treasure_count > 0) treasure_count -= amount;
             if(treasure_count < treasure_tapped_count) treasure_tapped_count = treasure_count;
             break;
         case 2:
-            if(clue_count > 0) clue_count--;
+            if(clue_count > 0) clue_count -= amount;
             if(clue_count < clue_tapped_count) clue_tapped_count = clue_count;
             break;
         default:
@@ -263,9 +263,17 @@ int main()
 
         // Handle incrementing token type count by 1
         if(bn::keypad::right_pressed()) {
-            increment_selected_artifact();
+            if(bn::keypad::start_held()) {
+                increment_selected_artifact(10);
+            } else {
+                increment_selected_artifact();
+            }
         } else if(bn::keypad::left_pressed()) {
-            decrement_selected_artifact();
+            if(bn::keypad::start_held()) {
+                decrement_selected_artifact(10);
+            } else {
+                decrement_selected_artifact();
+            }
         }
 
         // Handle tapping tokens

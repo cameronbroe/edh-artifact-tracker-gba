@@ -307,6 +307,15 @@ int main()
 
             clue_count = 0;
             clue_tapped_count = 0;
+        } else if(bn::keypad::select_held() && bn::keypad::b_pressed()) {
+            food_tapped_count = 0;
+            treasure_tapped_count = 0;
+            clue_tapped_count = 0;
+
+        } else if(bn::keypad::select_held() && bn::keypad::a_pressed()) {
+            food_tapped_count = food_count;
+            treasure_tapped_count = treasure_count;
+            clue_tapped_count = clue_count;
         } else {
             // Handle selecting token type
             if(bn::keypad::up_pressed()) {

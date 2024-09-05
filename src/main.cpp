@@ -13,6 +13,8 @@
 #include "bn_sprite_items_gold_pile.h"
 #include "bn_sprite_items_parchment_new.h"
 
+#include "bn_sprite_items_summonings.h"
+
 #include "bf_big_sprite_font.h"
 
 #define FOOD_Y -36
@@ -24,6 +26,8 @@
 #define TAPPED_X 30
 #define UNTAPPED_X 0
 
+#define SELECTION_X -92
+
 static int counter = 0;
 
 static int food_count = 999;
@@ -33,6 +37,11 @@ static int clue_count = 999;
 static int food_tapped_count = 999;
 static int treasure_tapped_count = 999;
 static int clue_tapped_count = 999;
+
+// 0 = food
+// 1 = treasure
+// 2 = clue
+static int selected_artifact = 0;
 
 int calculate_untapped_count(int tapped, int total) {
     return total - tapped;
@@ -122,6 +131,23 @@ void update_clue_counters(
     text_generator.generate(UNTAPPED_X, CLUE_Y, clue_untapped_string, untapped_sprites);
 }
 
+void update_selection(bn::sprite_ptr selection_sprite) {
+    switch(selected_artifact) {
+        case 0:
+            selection_sprite.set_position(SELECTION_X, FOOD_Y);
+            break;
+        case 1:
+            selection_sprite.set_position(SELECTION_X, TREASURE_Y);
+            break;
+        case 2:
+            selection_sprite.set_position(SELECTION_X, CLUE_Y);
+            break;
+        default:
+            selection_sprite.set_position(SELECTION_X, FOOD_Y);
+            break;
+    }
+}
+
 int main()
 {
     bn::core::init();
@@ -151,6 +177,8 @@ int main()
     bn::sprite_ptr clue_sprite = bn::sprite_items::parchment_new.create_sprite(ICON_X, CLUE_Y);
     clue_sprite.set_scale(0.75);
 
+    bn::sprite_ptr selection_sprite = bn::sprite_items::summonings.create_sprite(SELECTION_X, -36);
+
     while(true)
     {
         if(bn::keypad::a_pressed()) {
@@ -160,6 +188,18 @@ int main()
         } else if(bn::keypad::select_pressed()) {
             counter = 0;
         }
+
+        if(bn::keypad::up_pressed()) {
+            if(selected_artifact == 0) {
+                selected_artifact = 2;
+            } else {
+                selected_artifact--;
+            }
+        } else if(bn::keypad::down_pressed()) {
+            selected_artifact = (selected_artifact + 1) % 3;
+        }
+
+        update_selection(selection_sprite);
 
 
         update_food_counters(counter_text_generator, food_total_sprites, food_tapped_sprites, food_untapped_sprites);

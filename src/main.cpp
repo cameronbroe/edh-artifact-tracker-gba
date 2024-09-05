@@ -153,29 +153,53 @@ void update_selection(bn::sprite_ptr selection_sprite) {
 void increment_selected_artifact(int amount = 1) {
     switch(selected_artifact) {
         case 0:
-            if(food_count < MAX_TOKEN_COUNT) food_count += amount;
+            if((food_count + amount) <= MAX_TOKEN_COUNT) {
+                food_count += amount;
+            } else {
+                food_count = MAX_TOKEN_COUNT;
+            }
             break;
         case 1:
-            if(treasure_count < MAX_TOKEN_COUNT) treasure_count += amount;
+            if((treasure_count + amount) <= MAX_TOKEN_COUNT) {
+                treasure_count += amount;
+            } else {
+                treasure_count = MAX_TOKEN_COUNT;
+            }
             break;
         case 2:
-            if(clue_count < MAX_TOKEN_COUNT) clue_count += amount;
+            if((clue_count + amount) <= MAX_TOKEN_COUNT) {
+                clue_count += amount;
+            } else {
+                clue_count = MAX_TOKEN_COUNT;
+            }
             break;
         default:
             break;
     }
 }
 
-void tap_selected_artifact() {
+void tap_selected_artifact(int amount = 1) {
     switch(selected_artifact) {
         case 0:
-            if(food_tapped_count < food_count) food_tapped_count++;
+            if((food_tapped_count + amount) <= food_count) {
+                food_tapped_count += amount;
+            } else {
+                food_tapped_count = food_count;
+            }
             break;
         case 1:
-            if(treasure_tapped_count < treasure_count) treasure_tapped_count++;
+            if((treasure_tapped_count + amount) <= treasure_count) {
+                treasure_tapped_count += amount;
+            } else {
+                treasure_tapped_count = treasure_count;
+            }
             break;
         case 2:
-            if(clue_tapped_count < clue_count) clue_tapped_count++;
+            if((clue_tapped_count + amount) <= clue_count) {
+                clue_tapped_count += amount;
+            } else {
+                clue_tapped_count = clue_count;
+            }
             break;
         default:
             break;
@@ -185,15 +209,27 @@ void tap_selected_artifact() {
 void decrement_selected_artifact(int amount = 1) {
     switch(selected_artifact) {
         case 0:
-            if(food_count > 0) food_count -= amount;
+            if((food_count - amount) >= 0) {
+                food_count -= amount;
+            } else {
+                food_count = 0;
+            }
             if(food_count < food_tapped_count) food_tapped_count = food_count;
             break;
         case 1:
-            if(treasure_count > 0) treasure_count -= amount;
+            if((treasure_count - amount) >= 0) {
+                treasure_count -= amount;
+            } else {
+                treasure_count = 0;
+            }
             if(treasure_count < treasure_tapped_count) treasure_tapped_count = treasure_count;
             break;
         case 2:
-            if(clue_count > 0) clue_count -= amount;
+            if((clue_count - amount) >= 0) {
+                clue_count -= amount;
+            } else {
+                clue_count = 0;
+            }
             if(clue_count < clue_tapped_count) clue_tapped_count = clue_count;
             break;
         default:
@@ -201,16 +237,28 @@ void decrement_selected_artifact(int amount = 1) {
     }
 }
 
-void untap_selected_artifact() {
+void untap_selected_artifact(int amount = 1) {
     switch(selected_artifact) {
         case 0:
-            if(food_tapped_count > 0) food_tapped_count--;
+            if((food_tapped_count - amount) >= 0) {
+                food_tapped_count -= amount;
+            } else {
+                food_tapped_count = 0;
+            }
             break;
         case 1:
-            if(treasure_tapped_count > 0) treasure_tapped_count--;
+            if((treasure_tapped_count - amount) >= 0) {
+                treasure_tapped_count -= amount;
+            } else {
+                treasure_tapped_count = 0;
+            }
             break;
         case 2:
-            if(clue_tapped_count > 0) clue_tapped_count--;
+            if((clue_tapped_count - amount) >= 0) {
+                clue_tapped_count -= amount;
+            } else {
+                clue_tapped_count = 0;
+            }
             break;
         default:
             break;
@@ -278,9 +326,17 @@ int main()
 
         // Handle tapping tokens
         if(bn::keypad::a_pressed()) {
-            tap_selected_artifact();
+            if(bn::keypad::start_held()) {
+                tap_selected_artifact(10);
+            } else {
+                tap_selected_artifact();
+            }
         } else if(bn::keypad::b_pressed()) {
-            untap_selected_artifact();
+            if(bn::keypad::start_held()) {
+                untap_selected_artifact(10);
+            } else {
+                untap_selected_artifact();
+            }
         }
 
 

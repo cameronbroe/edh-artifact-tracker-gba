@@ -186,12 +186,15 @@ void decrement_selected_artifact() {
     switch(selected_artifact) {
         case 0:
             if(food_count > 0) food_count--;
+            if(food_count < food_tapped_count) food_tapped_count = food_count;
             break;
         case 1:
             if(treasure_count > 0) treasure_count--;
+            if(treasure_count < treasure_tapped_count) treasure_tapped_count = treasure_count;
             break;
         case 2:
             if(clue_count > 0) clue_count--;
+            if(clue_count < clue_tapped_count) clue_tapped_count = clue_count;
             break;
         default:
             break;

@@ -1,0 +1,28 @@
+name: Build GBA ROM
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: 'recursive'
+
+      - name: Build ROM in Docker
+        run: |
+          docker build -t gba-rom-builder .
+          docker run --rm -v ${{ github.workspace }}:/src gba-rom-builder
+
+      - name: Upload built ROM
+        uses: actions/upload-artifact@v4
+        with:
+          name: gba-rom
+          path: edh-artifact-tracker-gba.gba

@@ -16,13 +16,23 @@ jobs:
         with:
           submodules: 'recursive'
 
-      - name: Build ROM in Docker
+      - name: Output pwd
+        run: echo $(pwd)
+
+      - name: Build ROM in Docker to an image
         run: |
           docker build -t gba-rom-builder .
-          docker run --rm -v ${{ github.workspace }}:/src gba-rom-builder
+
+      - name: Create a container from the image and copy out the built ROM
+        run: |
+          docker run --name gba-rom-build gba-rom-builder
+          docker cp gba-rom-build:/edh-artifact-tracker-gba/edh-artifact-tracker-gba.gba ${{ github.workspace }}/edh-artifact-tracker-gba.gba
+
+      - name: List GitHub Workspace dir contents
+        run: ls ${{ github.workspace }}
 
       - name: Upload built ROM
         uses: actions/upload-artifact@v4
         with:
           name: gba-rom
-          path: edh-artifact-tracker-gba.gba
+          path: ${{ github.workspace }}/edh-artifact-tracker-gba.gba

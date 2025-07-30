@@ -3,6 +3,7 @@ name: Build GBA ROM
 on:
   push:
     branches: [main]
+    tags: ["v*.*.*"]
   pull_request:
     branches: [main]
 
@@ -36,3 +37,9 @@ jobs:
         with:
           name: gba-rom
           path: ${{ github.workspace }}/edh-artifact-tracker-gba.gba
+
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        if: github.ref_type == 'tag'
+        with:
+          files: ${{ github.workspace }}/edh-artifact-tracker-gba.gba

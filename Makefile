@@ -26,7 +26,7 @@
 #
 # All directories are specified relative to the project directory where the makefile is found.
 #---------------------------------------------------------------------------------------------------------------------
-TARGET      :=  $(notdir $(CURDIR))
+TARGET      :=  edh-artifact-tracker-gba
 BUILD       :=  build
 LIBBUTANO   :=  ./butano/butano
 PYTHON      :=  python
